@@ -1,14 +1,21 @@
+using AirlineCompanyAPI.Config;
 using AirlineCompanyAPI.Config.Docs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-var swaggerConfig = new SwaggerConfig(builder.Configuration);
+
+var applicationData = new ApplicationData(builder.Configuration);
+
+// Documentation
+var swaggerConfig = new SwaggerConfig(applicationData);
 swaggerConfig.Configure(builder.Services);
+
+// Injection
+builder.Services.AddSingleton(applicationData);
+builder.Services.AddSingleton(swaggerConfig);
 
 var app = builder.Build();
 
@@ -19,9 +26,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

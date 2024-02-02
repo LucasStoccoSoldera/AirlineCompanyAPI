@@ -1,45 +1,59 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace AirlineCompanyAPI.Config.Docs
 {
-    internal class SwaggerConfig(IConfiguration configuration)
+    internal class SwaggerConfig(ApplicationData applicationData) : ISwaggerConfig
     {
-        private readonly ApplicationData applicationData = new(configuration);
+
         public void Configure(IServiceCollection services)
         {
             services.AddSwaggerGen(option =>
             {
-                OpenApiInfo apiInfo = new()
+                SetApiInfo(option);
+                SetSecurityDefinition(option);
+                SetSecurityRequirement(option);
+            });
+        }
+        public void SetApiInfo(SwaggerGenOptions option)
+        {
+            OpenApiInfo apiInfo = new()
+            {
+                Title = applicationData.Name,
+                Version = applicationData.Version,
+                Description = applicationData.Description,
+            };
+            if (applicationData.Contact?.Url != null)
+            {
+                apiInfo.Contact = new OpenApiContact
                 {
-                    Title = applicationData.Name,
-                    Version = applicationData.Version,
-                    Description = applicationData.Description,
+                    Name = applicationData.Contact.Name,
+                    Url = new Uri(applicationData.Contact.Url)
                 };
-                if (applicationData.Contact?.Url != null)
-                {
-                    apiInfo.Contact = new OpenApiContact
-                    {
-                        Name = applicationData.Contact.Name,
-                        Url = new Uri(applicationData.Contact.Url)
-                    };
-                }
-                option.SwaggerDoc(
-                    applicationData.Version,
-                    apiInfo
-                );
+            }
+            option.SwaggerDoc(
+                applicationData.Version,
+                apiInfo
+            );
+        }
 
-                OpenApiSecurityScheme securityDefinition = new()
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                };
-                option.AddSecurityDefinition("Bearer", securityDefinition);
+        public void SetSecurityDefinition(SwaggerGenOptions option)
+        {
+            OpenApiSecurityScheme securityDefinition = new()
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = "Bearer"
+            };
+            option.AddSecurityDefinition("Bearer", securityDefinition);
+        }
 
-                OpenApiSecurityRequirement securityRequirement = new()
+        public void SetSecurityRequirement(SwaggerGenOptions option)
+        {
+            OpenApiSecurityRequirement securityRequirement = new()
                 {
                     {
                         new OpenApiSecurityScheme
@@ -52,9 +66,8 @@ namespace AirlineCompanyAPI.Config.Docs
                         },
                         new List<string>()
                     }
-                };  
-                option.AddSecurityRequirement(securityRequirement);
-            });
+                };
+            option.AddSecurityRequirement(securityRequirement);
         }
 
         public void Enable(IApplicationBuilder app)
