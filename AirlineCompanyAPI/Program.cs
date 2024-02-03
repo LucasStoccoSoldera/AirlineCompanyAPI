@@ -1,5 +1,6 @@
 using AirlineCompanyAPI.Config;
 using AirlineCompanyAPI.Config.Docs;
+using AirlineCompanyAPI.Exceptions.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,12 @@ var applicationData = new ApplicationData(builder.Configuration);
 // Documentation
 var swaggerConfig = new SwaggerConfig(applicationData);
 swaggerConfig.Configure(builder.Services);
+
+// Exeception handling
+builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
+builder.Services.AddExceptionHandler<InternalServerErrorExceptionHandler>();
+builder.Services.AddExceptionHandler<NotImplementedExceptionHandler>();
+builder.Services.AddExceptionHandler<UnauthorizedExceptionHandler>();
 
 // Injection
 builder.Services.AddSingleton(applicationData);
