@@ -39,7 +39,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
 
         public virtual DbSet<Flight> Flights { get; set; }
 
-        public virtual DbSet<FlightsV> FlightsVs { get; set; }
+        public virtual DbSet<FlightDetailed> FlightDetaileds { get; set; }
 
         public virtual DbSet<Route> Routes { get; set; }
 
@@ -146,15 +146,15 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
 
             modelBuilder.Entity<BoardingPass>(entity =>
             {
-                entity.HasKey(e => new { e.TicketNo, e.FlightId }).HasName("boarding_passes_pkey");
+                entity.HasKey(e => new { e.TicketCode, e.FlightId }).HasName("boarding_passes_pkey");
 
                 entity.ToTable("boarding_passes", "bookings", tb => tb.HasComment("Boarding passes"));
 
-                entity.HasIndex(e => new { e.FlightId, e.BoardingNo }, "boarding_passes_flight_id_boarding_no_key").IsUnique();
+                entity.HasIndex(e => new { e.FlightId, e.BoardingCode }, "boarding_passes_flight_id_boarding_no_key").IsUnique();
 
-                entity.HasIndex(e => new { e.FlightId, e.SeatNo }, "boarding_passes_flight_id_seat_no_key").IsUnique();
+                entity.HasIndex(e => new { e.FlightId, e.SeatCode }, "boarding_passes_flight_id_seat_no_key").IsUnique();
 
-                entity.Property(e => e.TicketNo)
+                entity.Property(e => e.TicketCode)
                     .HasMaxLength(13)
                     .IsFixedLength()
                     .HasComment("Ticket number")
@@ -162,27 +162,27 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                 entity.Property(e => e.FlightId)
                     .HasComment("Flight ID")
                     .HasColumnName("flight_id");
-                entity.Property(e => e.BoardingNo)
+                entity.Property(e => e.BoardingCode)
                     .HasComment("Boarding pass number")
                     .HasColumnName("boarding_no");
-                entity.Property(e => e.SeatNo)
+                entity.Property(e => e.SeatCode)
                     .HasMaxLength(4)
                     .HasComment("Seat number")
                     .HasColumnName("seat_no");
 
                 entity.HasOne(d => d.TicketFlight).WithOne(p => p.BoardingPass)
-                    .HasForeignKey<BoardingPass>(d => new { d.TicketNo, d.FlightId })
+                    .HasForeignKey<BoardingPass>(d => new { d.TicketCode, d.FlightId })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("boarding_passes_ticket_no_fkey");
             });
 
             modelBuilder.Entity<Booking>(entity =>
             {
-                entity.HasKey(e => e.BookRef).HasName("bookings_pkey");
+                entity.HasKey(e => e.BookCode).HasName("bookings_pkey");
 
                 entity.ToTable("bookings", "bookings", tb => tb.HasComment("Bookings"));
 
-                entity.Property(e => e.BookRef)
+                entity.Property(e => e.BookCode)
                     .HasMaxLength(6)
                     .IsFixedLength()
                     .HasComment("Booking number")
@@ -202,7 +202,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
 
                 entity.ToTable("flights", "bookings", tb => tb.HasComment("Flights"));
 
-                entity.HasIndex(e => new { e.FlightNo, e.ScheduledDeparture }, "flights_flight_no_scheduled_departure_key").IsUnique();
+                entity.HasIndex(e => new { e.FlightCode, e.ScheduledDeparture }, "flights_flight_no_scheduled_departure_key").IsUnique();
 
                 entity.Property(e => e.FlightId)
                     .HasDefaultValueSql("nextval('flights_flight_id_seq'::regclass)")
@@ -229,7 +229,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                     .IsFixedLength()
                     .HasComment("Airport of departure")
                     .HasColumnName("departure_airport");
-                entity.Property(e => e.FlightNo)
+                entity.Property(e => e.FlightCode)
                     .HasMaxLength(6)
                     .IsFixedLength()
                     .HasComment("Flight number")
@@ -261,7 +261,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                     .HasConstraintName("flights_departure_airport_fkey");
             });
 
-            modelBuilder.Entity<FlightsV>(entity =>
+            modelBuilder.Entity<FlightDetailed>(entity =>
             {
                 entity
                     .HasNoKey()
@@ -314,7 +314,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                 entity.Property(e => e.FlightId)
                     .HasComment("Flight ID")
                     .HasColumnName("flight_id");
-                entity.Property(e => e.FlightNo)
+                entity.Property(e => e.FlightCode)
                     .HasMaxLength(6)
                     .IsFixedLength()
                     .HasComment("Flight number")
@@ -381,7 +381,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                 entity.Property(e => e.Duration)
                     .HasComment("Scheduled duration of flight")
                     .HasColumnName("duration");
-                entity.Property(e => e.FlightNo)
+                entity.Property(e => e.FlightCode)
                     .HasMaxLength(6)
                     .IsFixedLength()
                     .HasComment("Flight number")
@@ -390,7 +390,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
 
             modelBuilder.Entity<Seat>(entity =>
             {
-                entity.HasKey(e => new { e.AircraftCode, e.SeatNo }).HasName("seats_pkey");
+                entity.HasKey(e => new { e.AircraftCode, e.SeatCode }).HasName("seats_pkey");
 
                 entity.ToTable("seats", "bookings", tb => tb.HasComment("Seats"));
 
@@ -399,7 +399,7 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                     .IsFixedLength()
                     .HasComment("Aircraft code, IATA")
                     .HasColumnName("aircraft_code");
-                entity.Property(e => e.SeatNo)
+                entity.Property(e => e.SeatCode)
                     .HasMaxLength(4)
                     .HasComment("Seat number")
                     .HasColumnName("seat_no");
@@ -415,16 +415,16 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
 
             modelBuilder.Entity<Ticket>(entity =>
             {
-                entity.HasKey(e => e.TicketNo).HasName("tickets_pkey");
+                entity.HasKey(e => e.TicketCode).HasName("tickets_pkey");
 
                 entity.ToTable("tickets", "bookings", tb => tb.HasComment("Tickets"));
 
-                entity.Property(e => e.TicketNo)
+                entity.Property(e => e.TicketCode)
                     .HasMaxLength(13)
                     .IsFixedLength()
                     .HasComment("Ticket number")
                     .HasColumnName("ticket_no");
-                entity.Property(e => e.BookRef)
+                entity.Property(e => e.BookCode)
                     .HasMaxLength(6)
                     .IsFixedLength()
                     .HasComment("Booking number")
@@ -441,19 +441,19 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                     .HasComment("Passenger name")
                     .HasColumnName("passenger_name");
 
-                entity.HasOne(d => d.BookRefNavigation).WithMany(p => p.Tickets)
-                    .HasForeignKey(d => d.BookRef)
+                entity.HasOne(d => d.Booking).WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.BookCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_book_ref_fkey");
             });
 
             modelBuilder.Entity<TicketFlight>(entity =>
             {
-                entity.HasKey(e => new { e.TicketNo, e.FlightId }).HasName("ticket_flights_pkey");
+                entity.HasKey(e => new { e.TicketCode, e.FlightId }).HasName("ticket_flights_pkey");
 
                 entity.ToTable("ticket_flights", "bookings", tb => tb.HasComment("Flight segment"));
 
-                entity.Property(e => e.TicketNo)
+                entity.Property(e => e.TicketCode)
                     .HasMaxLength(13)
                     .IsFixedLength()
                     .HasComment("Ticket number")
@@ -475,13 +475,11 @@ namespace AirlineCompanyAPI.Data.Relational.Contexts
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ticket_flights_flight_id_fkey");
 
-                entity.HasOne(d => d.TicketNoNavigation).WithMany(p => p.TicketFlights)
-                    .HasForeignKey(d => d.TicketNo)
+                entity.HasOne(d => d.Ticket).WithMany(p => p.TicketFlights)
+                    .HasForeignKey(d => d.TicketCode)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("ticket_flights_ticket_no_fkey");
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
     }
 }

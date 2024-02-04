@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirlineCompanyAPI.Data.Relational.Models;
 
@@ -16,7 +18,8 @@ public partial class Seat
     /// <summary>
     /// Seat number
     /// </summary>
-    public string SeatNo { get; set; } = null!;
+    [Column("seat_no")]
+    public string SeatCode { get; set; } = null!;
 
     /// <summary>
     /// Travel class

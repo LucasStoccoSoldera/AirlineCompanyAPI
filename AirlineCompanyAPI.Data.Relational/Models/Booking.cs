@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirlineCompanyAPI.Data.Relational.Models;
 
@@ -11,7 +12,8 @@ public partial class Booking
     /// <summary>
     /// Booking number
     /// </summary>
-    public string BookRef { get; set; } = null!;
+    [Column("book_ref")]
+    public string BookCode { get; set; } = null!;
 
     /// <summary>
     /// Booking date

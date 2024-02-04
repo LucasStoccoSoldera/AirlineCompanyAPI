@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirlineCompanyAPI.Data.Relational.Models;
 
@@ -16,7 +17,8 @@ public partial class Flight
     /// <summary>
     /// Flight number
     /// </summary>
-    public string FlightNo { get; set; } = null!;
+    [Column("flight_no")]
+    public string FlightCode { get; set; } = null!;
 
     /// <summary>
     /// Scheduled departure time

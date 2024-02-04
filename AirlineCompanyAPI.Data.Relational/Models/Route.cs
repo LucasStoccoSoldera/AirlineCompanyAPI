@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirlineCompanyAPI.Data.Relational.Models;
 
@@ -8,7 +9,8 @@ public partial class Route
     /// <summary>
     /// Flight number
     /// </summary>
-    public string? FlightNo { get; set; }
+    [Column("flight_no")]
+    public string? FlightCode { get; set; }
 
     /// <summary>
     /// Code of airport of departure

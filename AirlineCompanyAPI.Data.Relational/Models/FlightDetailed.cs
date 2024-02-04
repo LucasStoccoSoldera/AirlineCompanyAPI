@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AirlineCompanyAPI.Data.Relational.Models;
 
-public partial class FlightsV
+[Table("flights_v")]
+public partial class FlightDetailed
 {
     /// <summary>
     /// Flight ID
@@ -13,7 +15,8 @@ public partial class FlightsV
     /// <summary>
     /// Flight number
     /// </summary>
-    public string? FlightNo { get; set; }
+    [Column("flight_no")]
+    public string? FlightCode { get; set; }
 
     /// <summary>
     /// Scheduled departure time
