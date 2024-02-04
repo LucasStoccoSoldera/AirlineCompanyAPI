@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineCompanyAPI", "AirlineCompanyAPI\AirlineCompanyAPI.csproj", "{BB46CA94-A876-4D9F-AFA4-2FE5B93DAC09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirlineCompanyAPI", "AirlineCompanyAPI\AirlineCompanyAPI.csproj", "{BB46CA94-A876-4D9F-AFA4-2FE5B93DAC09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineCompanyAPI.Test", "AirlineCompanyAPI.Test\AirlineCompanyAPI.Test.csproj", "{3668D36F-108A-42BD-82E0-B11AF1C613E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AirlineCompanyAPI.Test", "AirlineCompanyAPI.Test\AirlineCompanyAPI.Test.csproj", "{3668D36F-108A-42BD-82E0-B11AF1C613E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineCompanyAPI.Data.Relational", "AirlineCompanyAPI.Data.Relational\AirlineCompanyAPI.Data.Relational.csproj", "{A4658ABD-F03D-4666-95F6-40766B5223E2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3668D36F-108A-42BD-82E0-B11AF1C613E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3668D36F-108A-42BD-82E0-B11AF1C613E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3668D36F-108A-42BD-82E0-B11AF1C613E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4658ABD-F03D-4666-95F6-40766B5223E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4658ABD-F03D-4666-95F6-40766B5223E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4658ABD-F03D-4666-95F6-40766B5223E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4658ABD-F03D-4666-95F6-40766B5223E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

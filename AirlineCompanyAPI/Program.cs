@@ -1,8 +1,12 @@
 using AirlineCompanyAPI.Config;
 using AirlineCompanyAPI.Config.Docs;
+using AirlineCompanyAPI.Data.Relational.Contexts;
 using AirlineCompanyAPI.Exceptions.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Database
+builder.Services.AddDbContext<AirlineCompanyDbContext>(); 
 
 // Add services to the container.
 builder.Services.AddControllers();
